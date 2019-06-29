@@ -64,8 +64,6 @@
 		47691F1022AEA3780081444A = {
 			isa = PBXGroup;
 			children = (
-				47785EC522C656BF002685DF /* UIColor+ColorChange.h */,
-				47785EC622C656BF002685DF /* UIColor+ColorChange.m */,
 				47691F1B22AEA3780081444A /* weather */,
 				47691F1A22AEA3780081444A /* Products */,
 			);
@@ -82,6 +80,8 @@
 		47691F1B22AEA3780081444A /* weather */ = {
 			isa = PBXGroup;
 			children = (
+				47785EC522C656BF002685DF /* UIColor+ColorChange.h */,
+				47785EC622C656BF002685DF /* UIColor+ColorChange.m */,
 				47A593BD22BE661200385DAD /* widget */,
 				4770F76E22B7D1B600891B0E /* network */,
 				47691F1C22AEA3780081444A /* AppDelegate.h */,
