@@ -12,9 +12,11 @@
 #import "widget/DayWeather.h"
 #import "network/RequestApi.h"
 #import "widget/OtherWeatherDetails.h"
-@interface ViewController ()<UITableViewDataSource,UITableViewDelegate,UICollectionViewDelegate,UICollectionViewDataSource>
+#import "UIScrollView+RefreshView.h"
+@interface ViewController ()<UITableViewDataSource,UITableViewDelegate,UICollectionViewDelegate,UICollectionViewDataSource,UIScrollViewDelegate>
 @property (nonatomic, strong) CurrentWeather *synopsis;
 @property (nonatomic, strong)  UILabel *area;
+@property (nonatomic, strong)  UIImageView *location;
 @property (nonatomic, strong)  UILabel *last_update;
 @property (nonatomic, strong)  UILabel *future_24_hour;
 @property (nonatomic, strong)  UILabel *future_7_day;
@@ -22,7 +24,6 @@
 @property (nonatomic, strong) UITableView *tableView2;
 @property (nonatomic, strong) UIView *view1;
 @property (nonatomic, strong) UIScrollView *scrollview;
-@property (nonatomic, strong) UIScrollView *viewContainer1;
 @property (nonatomic, strong) OtherWeatherDetails *pollution;
 @property (nonatomic, strong) OtherWeatherDetails *humidity;
 @property (nonatomic, strong) NSDictionary *hour_data;
@@ -35,18 +36,29 @@ NSMutableArray *future_hour_data;
     [super viewDidLoad];
     self.view.backgroundColor=[UIColor colorWithHexString:@"#fafafa"];
     _scrollview=[[UIScrollView alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height)];
-    
+    _scrollview.alwaysBounceVertical=YES;
+     self.scrollview.delegate = self;
+    self.automaticallyAdjustsScrollViewInsets = NO;
+//    _scrollview.contentInsetAdjustmentBehavior =YES;
     [self.view addSubview:_scrollview];
     _synopsis=[[CurrentWeather alloc]initWithFrame:CGRectMake(100*F/2-25*F,20*F, 50*F, 45*F)];
     
     [self.scrollview addSubview:_synopsis];
     
-    _area=[[UILabel alloc]initWithFrame:CGRectMake(self.view.frame.size.width/2-35*F/2, CGRectGetMaxY(_synopsis.frame)+5*F, 35*F, 5*F)];
+    _area=[[UILabel alloc]init];
+    
     _area.textAlignment=NSTextAlignmentCenter;
-    
+//    _area.backgroundColor=[UIColor redColor];
     _area.text=@"浦东新区";
-    [self.scrollview addSubview:_area];
+//    [_area setFrame:<#(CGRect)#>]
     
+    CGSize labelSize=[_area.text boundingRectWithSize:CGSizeMake([UIScreen mainScreen].bounds.size.width-20, 0) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName: _area.font} context:nil].size;
+
+    _area.frame=CGRectMake(self.view.frame.size.width/2-labelSize.width/2, CGRectGetMaxY(_synopsis.frame)+5*F, labelSize.width, 5*F);
+    [self.scrollview addSubview:_area];
+    _location=[[UIImageView alloc]initWithFrame:CGRectMake(CGRectGetMaxX(_area.frame)+1*F,CGRectGetMaxY(_synopsis.frame)+5*F, 5*F, 5*F) ];
+    [_location setImage:[UIImage imageNamed:@"location"]];
+    [self.scrollview addSubview:_location];
     _last_update=[[UILabel alloc]initWithFrame:CGRectMake(self.view.frame.size.width/2-80, 330, 160, 30)];
     _last_update.textAlignment=NSTextAlignmentCenter;
     _last_update.font=[UIFont fontWithName:nil size:13];
@@ -106,7 +118,8 @@ NSMutableArray *future_hour_data;
     
     [_scrollview setContentSize:CGSizeMake(self.view.frame.size.width, CGRectGetMaxY(_humidity.frame))];
     [_scrollview setScrollEnabled:YES];
-    _scrollview.bounces = NO ;
+//    [self addObserver:_scrollview forKeyPath:<#(nonnull NSString *)#> options:<#(NSKeyValueObservingOptions)#> context:<#(nullable void *)#>]
+//    _scrollview.bounces = NO ;
     
     RequestApi *req=[[RequestApi alloc]init];
     NSString *url=@"https://www.tianqiapi.com/api/";
@@ -114,14 +127,14 @@ NSMutableArray *future_hour_data;
                            @"city":@"上海"};
     [req request:url params:params success:^(NSDictionary * _Nonnull resp) {
         dispatch_async(dispatch_get_main_queue(), ^(){
-            [self.synopsis initData:[resp[@"data"][0][@"tem"] stringByReplacingOccurrencesOfString:@"℃" withString:@""] info:resp[@"data"][0][@"wea"] aqi:resp[@"data"][0][@"air"]];
+            [self.synopsis initData:[resp[@"data"][0][@"tem"] stringByReplacingOccurrencesOfString:@"℃" withString:@""] info:resp[@"data"][0][@"wea"] aqi:resp[@"data"][0][@"air_level"]];
             self.last_update.text=[@"更新时间:" stringByAppendingString:[resp[@"update_time"] substringFromIndex:11]];
             future_hour_data = [NSMutableArray array];
             
             for (int i=0; i<[resp[@"data"][0][@"hours"] count]; i++) {
                 NSMutableDictionary *data=[NSMutableDictionary dictionary];
                 data[@"time"]=resp[@"data"][0][@"hours"][i][@"day"];
-                data[@"weather"]=@"1";
+                data[@"weather"]=resp[@"data"][0][@"hours"][i][@"wea"];
                 data[@"temperature"]=resp[@"data"][0][@"hours"][i][@"tem"];;
                 [future_hour_data addObject:data];
             }
@@ -129,24 +142,25 @@ NSMutableArray *future_hour_data;
             for (int i=0; i<[resp[@"data"][1][@"hours"] count]; i++) {
                 NSMutableDictionary *data=[NSMutableDictionary dictionary];
                 data[@"time"]=resp[@"data"][1][@"hours"][i][@"day"];
-                data[@"weather"]=@"1";
+                data[@"weather"]=resp[@"data"][1][@"hours"][i][@"wea"];
                 data[@"temperature"]=resp[@"data"][1][@"hours"][i][@"tem"];;
                 [future_hour_data addObject:data];
             }
-           
+            
             _collectionView.delegate=self;
             _collectionView.dataSource=self;
             
             
             for(int i=0;i<[resp[@"data"] count];i++){
                 DayWeather *label=[[DayWeather alloc]initWithFrame:CGRectMake(0, 0+50*i, 100, 50)];
-                [label setData:resp[@"data"][i][@"day"] weather_id:@"1" min_temperature:resp[@"data"][i][@"tem2"] max_temperature:resp[@"data"][i][@"tem1"] ];
+                [label setData:[[[resp[@"data"][i][@"date"] substringFromIndex:5] stringByAppendingString:@" "] stringByAppendingString:resp[@"data"][i][@"week"]] weather:resp[@"data"][i][@"wea"] min_temperature:resp[@"data"][i][@"tem2"] max_temperature:resp[@"data"][i][@"tem1"] ];
                 [self.view1 addSubview:label];
             }
-            [_pollution initData:@"23" NO2:@"4" SO2:@"45" aqi_value:44];
+            NSString *temp=resp[@"data"][0][@"air"];
+            [_pollution initData:@"23" NO2:@"4" SO2:@"45" aqi_value:[temp intValue]];
             [_humidity initData:resp[@"data"][0][@"tem"] zwx:resp[@"data"][0][@"index"][0][@"level"] humidity_value:@"50"];
         });
-
+        
     } fail:^(NSString * _Nonnull error_string) {
         NSLog(@"ddd");
     }];
@@ -178,7 +192,7 @@ NSMutableArray *future_hour_data;
     NSArray *tableData = [[NSArray alloc] initWithContentsOfFile:tablePList];
     
     HourWeatherCell *cell = (HourWeatherCell *)[collectionView dequeueReusableCellWithReuseIdentifier:@"cellId" forIndexPath:indexPath];
-    [cell initData:future_hour_data[indexPath.section][@"time"] weather:nil temperature:future_hour_data[indexPath.section][@"temperature"]];
+    [cell initData:future_hour_data[indexPath.section][@"time"] weather:@"中雨转大雨" temperature:future_hour_data[indexPath.section][@"temperature"]];
 //    [cell initData:];
 //    [cell initData:arr[indexPath.section]];
     

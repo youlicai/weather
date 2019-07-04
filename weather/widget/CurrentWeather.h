@@ -12,7 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface CurrentWeather : UIView
 
--(void)initData:(NSString *)temperature_nums info:(NSString *)info aqi:(int)aqi;
+-(void)initData:(NSString *)temperature_nums info:(NSString *)info aqi:(NSString *)aqi;
 @end
 
 NS_ASSUME_NONNULL_END

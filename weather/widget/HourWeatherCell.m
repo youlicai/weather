@@ -72,11 +72,18 @@
 -(void)initData:(NSString *) time weather:(NSString *)weather temperature:(NSString *)temperature{
     _temperature.text=temperature;
     _time.text=time;
-    if([weather containsString:@"多云"]){
-        
-    }else if([weather containsString:@"晴"]){
-        
-    }else if([weather containsString:@"晴"])
-   [_weather setImage:[UIImage imageNamed:@"weather"]];
+    weather=[self getweather:weather];
+   [_weather setImage:[UIImage imageNamed:weather]];
+}
+
+-(NSString *)getweather:(NSString *)weather{
+    NSString *r_weather;
+    if([weather containsString:@"转"]){
+        NSArray *array = [weather componentsSeparatedByString:@"转"];
+        r_weather=array[1];
+    }else
+        r_weather=weather;
+    
+    return r_weather;
 }
 @end

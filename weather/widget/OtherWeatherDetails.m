@@ -110,7 +110,7 @@
 }
 -(void)initData:(NSString *)temp zwx:(NSString *)zwx humidity_value:(NSString *)humidity_value{
     
-    [self drawProgress:0.3];
+    [self drawProgress:[humidity_value floatValue]/100];
     _desc=[[UILabel alloc]initWithFrame:CGRectMake(0, 0, 160, 20)];
     _desc.textAlignment=NSTextAlignmentCenter;
     _desc.font=[UIFont fontWithName:nil size:18];
@@ -121,6 +121,7 @@
     _mid_text.textAlignment=NSTextAlignmentCenter;
     _mid_text.font=[UIFont fontWithName:nil size:30];
      _mid_text.text=humidity_value;
+    
     [_left addSubview:_mid_text];
     
     _start_text=[[UILabel alloc]initWithFrame:CGRectMake(20, 190, 30, 20)];

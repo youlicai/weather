@@ -27,15 +27,28 @@
     }
     return self;
 }
--(void)setData:(NSString *)time weather_id:(NSString *)weather_id min_temperature:(NSString *) min_temperature max_temperature:(NSString *) max_temperature;{
-//    time = [time substringFromIndex:5];
-//    time=[time stringByReplacingOccurrencesOfString:@"-" withString:@"月"];
-//    time=[time stringByAppendingString:@"日"];
+-(void)setData:(NSString *)time weather:(NSString *)weather min_temperature:(NSString *) min_temperature max_temperature:(NSString *) max_temperature;{
+    NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:time];
+//    [str addAttribute:NSForegroundColorAttributeName value:[UIColor blueColor] range:NSMakeRange(,5)];
+    [str addAttribute:NSFontAttributeName value:[UIFont fontWithName:nil size:13.0] range:NSMakeRange(6,3)];
+
+    _date.attributedText = str;
     _date.text=time;
-//    NSLog([@(weather_id) stringValue]);
-    [_weather setImage:[UIImage imageNamed:weather_id]];
+    weather=[self getweather:weather];
+    [_weather setImage:[UIImage imageNamed:weather]];
     NSString *temperature=[min_temperature stringByAppendingString:@"/"];
     temperature=[temperature stringByAppendingString:max_temperature];
     _temperature.text=temperature;
+}
+
+-(NSString *)getweather:(NSString *)weather{
+    NSString *r_weather;
+    if([weather containsString:@"转"]){
+        NSArray *array = [weather componentsSeparatedByString:@"转"];
+        r_weather=array[1];
+    }else
+        r_weather=weather;
+    
+    return r_weather;
 }
 @end

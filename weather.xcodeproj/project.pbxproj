@@ -20,6 +20,8 @@
 		4775E16522B1CD03006EC75F /* DayWeather.m in Sources */ = {isa = PBXBuildFile; fileRef = 4775E16422B1CD03006EC75F /* DayWeather.m */; };
 		47785EBE22C18D1F002685DF /* WeatherCharge.m in Sources */ = {isa = PBXBuildFile; fileRef = 47785EBD22C18D1F002685DF /* WeatherCharge.m */; };
 		47785EC722C656BF002685DF /* UIColor+ColorChange.m in Sources */ = {isa = PBXBuildFile; fileRef = 47785EC622C656BF002685DF /* UIColor+ColorChange.m */; };
+		47785ECA22C7C071002685DF /* UIScrollView+RefreshView.m in Sources */ = {isa = PBXBuildFile; fileRef = 47785EC922C7C071002685DF /* UIScrollView+RefreshView.m */; };
+		47785ECD22C7C269002685DF /* RefreshHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 47785ECC22C7C269002685DF /* RefreshHeaderView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -48,6 +50,10 @@
 		47785EBD22C18D1F002685DF /* WeatherCharge.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WeatherCharge.m; sourceTree = "<group>"; };
 		47785EC522C656BF002685DF /* UIColor+ColorChange.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIColor+ColorChange.h"; sourceTree = "<group>"; };
 		47785EC622C656BF002685DF /* UIColor+ColorChange.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIColor+ColorChange.m"; sourceTree = "<group>"; };
+		47785EC822C7C071002685DF /* UIScrollView+RefreshView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIScrollView+RefreshView.h"; sourceTree = "<group>"; };
+		47785EC922C7C071002685DF /* UIScrollView+RefreshView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIScrollView+RefreshView.m"; sourceTree = "<group>"; };
+		47785ECB22C7C269002685DF /* RefreshHeaderView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RefreshHeaderView.h; sourceTree = "<group>"; };
+		47785ECC22C7C269002685DF /* RefreshHeaderView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RefreshHeaderView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -94,6 +100,10 @@
 				47691F2A22AEA3790081444A /* Info.plist */,
 				47691F2B22AEA3790081444A /* main.m */,
 				4770F76D22B7CA5200891B0E /* PrefixHeader.pch */,
+				47785EC822C7C071002685DF /* UIScrollView+RefreshView.h */,
+				47785EC922C7C071002685DF /* UIScrollView+RefreshView.m */,
+				47785ECB22C7C269002685DF /* RefreshHeaderView.h */,
+				47785ECC22C7C269002685DF /* RefreshHeaderView.m */,
 			);
 			path = weather;
 			sourceTree = "<group>";
@@ -199,9 +209,11 @@
 				47691F2122AEA3780081444A /* ViewController.m in Sources */,
 				476F9DB822BA79A1002E7E83 /* OtherWeatherDetails.m in Sources */,
 				47691F3522AEA68D0081444A /* CurrentWeather.m in Sources */,
+				47785ECD22C7C269002685DF /* RefreshHeaderView.m in Sources */,
 				4770F77122B7D22900891B0E /* RequestApi.m in Sources */,
 				47691F2C22AEA3790081444A /* main.m in Sources */,
 				47691F1E22AEA3780081444A /* AppDelegate.m in Sources */,
+				47785ECA22C7C071002685DF /* UIScrollView+RefreshView.m in Sources */,
 				476BB15F22AFF78900AC874B /* HourWeatherCell.m in Sources */,
 				4775E16522B1CD03006EC75F /* DayWeather.m in Sources */,
 			);

@@ -35,24 +35,30 @@
     return self;
 }
 
--(void)initData:(NSString *)temperature_nums info:(NSString *)info aqi:(int) aqi{
+-(void)initData:(NSString *)temperature_nums info:(NSString *)info aqi:(NSString *) aqi{
     _temperature.text=temperature_nums;
     self.unit.text=@"℃";
-    NSString *aqi_string;
-    if(aqi<=50){
-        aqi_string=@" 空气优";
-    }else if(50<aqi&&aqi<=100){
-        aqi_string=@" 空气良";
-    }else if(100<aqi&&aqi<=150){
-        aqi_string=@" 轻度污染";
-    }else if(150<aqi&&aqi<=200){
-        aqi_string=@" 中度污染";
-    }else if(200<aqi&&aqi<=250){
-        aqi_string=@" 重度污染";
-    }else if(250<aqi&&aqi<=300){
-        aqi_string=@" 严重污染";
-    }else
-        aqi_string=@" 严重污染";
-    self.other.text=[info stringByAppendingString:aqi_string];
+    if([aqi containsString:@"优"]){
+        aqi=@"空气优";
+    }else if([aqi containsString:@"良"]){
+        aqi=@"空气良";
+    }
+//    NSString *aqi_string;
+//    if(aqi<=50){
+//        aqi_string=@" 空气优";
+//    }else if(50<aqi&&aqi<=100){
+//        aqi_string=@" 空气良";
+//    }else if(100<aqi&&aqi<=150){
+//        aqi_string=@" 轻度污染";
+//    }else if(150<aqi&&aqi<=200){
+//        aqi_string=@" 中度污染";
+//    }else if(200<aqi&&aqi<=250){
+//        aqi_string=@" 重度污染";
+//    }else if(250<aqi&&aqi<=300){
+//        aqi_string=@" 严重污染";
+//    }else
+//        aqi_string=@" 严重污染";
+    
+    self.other.text=[info stringByAppendingString:[@" " stringByAppendingString:aqi]];
 }
 @end
