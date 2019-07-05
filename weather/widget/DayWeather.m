@@ -17,20 +17,21 @@
 -(instancetype)initWithFrame:(CGRect)frame{
     self=[super initWithFrame:frame];
     if(self){
-        _date=[[UILabel alloc]initWithFrame:CGRectMake(5*F, 0, 30*F, 15*F)];
-        _weather=[[UIImageView alloc]initWithFrame:CGRectMake(40*F, 3*F, 7*F, 7*F)];
-        _temperature=[[UILabel alloc]initWithFrame:CGRectMake(55*F, 0, 30*F, 15*F)];
+        _date=[[UILabel alloc]initWithFrame:CGRectMake(5*F, 0, 30*F, 10*F)];
+        _weather=[[UIImageView alloc]initWithFrame:CGRectMake(45*F, 2*F, 7*F, 7*F)];
+        _temperature=[[UILabel alloc]initWithFrame:CGRectMake(65*F, 0, 30*F, 10*F)];
         _temperature.textAlignment=NSTextAlignmentRight;
         _temperature.font=[UIFont fontWithName:nil size:4*F];
         [self addSubview:_date];
         [self addSubview:_weather];
         [self addSubview:_temperature];
+//        self.backgroundColor=[UIColor redColor];
     }
     return self;
 }
 -(void)setData:(NSString *)time weather:(NSString *)weather min_temperature:(NSString *) min_temperature max_temperature:(NSString *) max_temperature;{
     NSMutableAttributedString *str = [[NSMutableAttributedString alloc] initWithString:time];
-    [str addAttribute:NSFontAttributeName value:[UIFont fontWithName:nil size:3.5*F] range:NSMakeRange(0,5)];
+    [str addAttribute:NSFontAttributeName value:[UIFont fontWithName:nil size:4.5*F] range:NSMakeRange(0,5)];
     [str addAttribute:NSFontAttributeName value:[UIFont fontWithName:nil size:3*F] range:NSMakeRange(6,3)];
     _date.attributedText = str;
     _date.text=time;

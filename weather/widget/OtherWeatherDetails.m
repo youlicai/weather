@@ -15,8 +15,6 @@
 @property (nonatomic, strong)  UILabel *start_text;
 @property (nonatomic, strong)  UILabel *end_text;
 @property (nonatomic, strong)  UILabel *mid_text;
-//@property (nonatomic, strong)  UILabel *pm2;
-//@property (nonatomic, strong)  UILabel *pm2_value;
 @end
 
 @implementation OtherWeatherDetails
@@ -62,7 +60,7 @@
     pm2.text=@"PM2.5";
     pm2.font=[UIFont fontWithName:nil size:4*F];
     UILabel *pm2_value=[[UILabel alloc]initWithFrame:CGRectMake(20*F,10*F, 20*F, 10*F)];
-    pm2_value.text=@"24";
+    pm2_value.text=@"27";
     pm2_value.font=[UIFont fontWithName:nil size:4*F];
     [_right addSubview:pm2];
     [_right addSubview:pm2_value];
@@ -71,7 +69,7 @@
     n2.text=@"NO2";
     n2.font=[UIFont fontWithName:nil size:4*F];
     UILabel *n2_value=[[UILabel alloc]initWithFrame:CGRectMake(20*F,CGRectGetMaxY(pm2.frame), 20*F, 10*F)];
-    n2_value.text=@"24";
+    n2_value.text=@"34";
     n2_value.font=[UIFont fontWithName:nil size:4*F];
     [_right addSubview:n2];
     [_right addSubview:n2_value];
@@ -80,7 +78,7 @@
     s2.text=@"SO2";
     s2.font=[UIFont fontWithName:nil size:4*F];
     UILabel *s2_value=[[UILabel alloc]initWithFrame:CGRectMake(20*F,CGRectGetMaxY(n2.frame), 20*F, 10*F)];
-    s2_value.text=@"24";
+    s2_value.text=@"40";
     s2_value.font=[UIFont fontWithName:nil size:4*F];
     [_right addSubview:s2];
     [_right addSubview:s2_value];

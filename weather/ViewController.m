@@ -75,26 +75,24 @@ NSMutableArray *future_hour_data;
     [_collectionView registerClass:[HourWeatherCell class] forCellWithReuseIdentifier:@"cellId"];
     [self.scrollview addSubview:_collectionView];
     
-    _future_7_day=[[UILabel alloc]initWithFrame:CGRectMake(3*F, CGRectGetMaxY(_collectionView.frame)+5*F, 30*F, 3*F)];
+    _future_7_day=[[UILabel alloc]initWithFrame:CGRectMake(3*F, CGRectGetMaxY(_collectionView.frame)+2*F, 30*F, 4*F)];
     _future_7_day.font=[UIFont fontWithName:nil size:3*F];
     _future_7_day.text=@"未来7天天气";
     _future_7_day.textColor= [UIColor colorWithHexString:@"#444444"];
     [self.scrollview addSubview:_future_7_day];
-    _view1=[[UIView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(_future_7_day.frame), self.view.bounds.size.width, 350)];
+    _view1=[[UIView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(_future_7_day.frame), self.view.bounds.size.width, 84*F)];
     
     [self.scrollview addSubview:_view1];
     UIView *line1=[[UIView alloc]initWithFrame:CGRectMake(5*F, CGRectGetMaxY(_view1.frame)+4*F, 90*F, 0.5)];
-    line1.backgroundColor=[UIColor grayColor];
+    line1.backgroundColor=[UIColor colorWithHexString:@"#dddddd"];
     [self.scrollview addSubview:line1];
-    
     _pollution=[[OtherWeatherDetails alloc]initWithFrame:CGRectMake(5*F, CGRectGetMaxY(line1.frame)+5*F,95*F, 50*F)];
-    
     [self.scrollview addSubview:_pollution];
-    UIView *line2=[[UIView alloc]initWithFrame:CGRectMake(5*F, CGRectGetMaxY(_pollution.frame)+3*F, 90*F, 0.5)];
-    line2.backgroundColor=[UIColor grayColor];
+    
+    UIView *line2=[[UIView alloc]initWithFrame:CGRectMake(5*F, CGRectGetMaxY(_pollution.frame)+3*F, 90*F, 0.4)];
+    line2.backgroundColor=[UIColor colorWithHexString:@"#dddddd"];
     [self.scrollview addSubview:line2];
     _humidity=[[OtherWeatherDetails alloc]initWithFrame:CGRectMake(5*F, CGRectGetMaxY(line2.frame)+5*F,95*F, 50*F)];
-
     [self.scrollview addSubview:_humidity];
 }
 
@@ -105,8 +103,7 @@ NSMutableArray *future_hour_data;
     
     [_scrollview setContentSize:CGSizeMake(self.view.frame.size.width, CGRectGetMaxY(_humidity.frame))];
     [_scrollview setScrollEnabled:YES];
-//    [self addObserver:_scrollview forKeyPath:<#(nonnull NSString *)#> options:<#(NSKeyValueObservingOptions)#> context:<#(nullable void *)#>]
-//    _scrollview.bounces = NO ;
+
     
     RequestApi *req=[[RequestApi alloc]init];
     NSString *url=@"https://www.tianqiapi.com/api/";
@@ -139,7 +136,7 @@ NSMutableArray *future_hour_data;
             
             
             for(int i=0;i<[resp[@"data"] count];i++){
-                DayWeather *label=[[DayWeather alloc]initWithFrame:CGRectMake(0, 0+50*i, 100, 50)];
+                DayWeather *label=[[DayWeather alloc]initWithFrame:CGRectMake(0, 12*F*i,  self.view.bounds.size.width, 12*F)];
                 [label setData:[[[resp[@"data"][i][@"date"] substringFromIndex:5] stringByAppendingString:@" "] stringByAppendingString:resp[@"data"][i][@"week"]] weather:resp[@"data"][i][@"wea"] min_temperature:resp[@"data"][i][@"tem2"] max_temperature:resp[@"data"][i][@"tem1"] ];
                 [self.view1 addSubview:label];
             }
@@ -167,15 +164,15 @@ NSMutableArray *future_hour_data;
 
 // 返回每个item的大小
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
-    CGFloat height = 25*F;
-    CGFloat width = 25*F;
+    CGFloat height = 30*F;
+    CGFloat width = 20*F;
     return CGSizeMake(width, height);
  
 }
 
 -(UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
     HourWeatherCell *cell = (HourWeatherCell *)[collectionView dequeueReusableCellWithReuseIdentifier:@"cellId" forIndexPath:indexPath];
-    [cell initData:future_hour_data[indexPath.section][@"time"] weather:@"中雨转大雨" temperature:future_hour_data[indexPath.section][@"temperature"]];
+    [cell initData:future_hour_data[indexPath.section][@"time"] weather:future_hour_data[indexPath.section][@"weather"] temperature:future_hour_data[indexPath.section][@"temperature"]];
     return cell;
     
 }

@@ -21,13 +21,13 @@
 - (instancetype)initWithFrame:(CGRect)frame{
     if (self = [super initWithFrame:frame]) {
         //添加自己需要个子视图控件
-        _time=[[UILabel alloc]initWithFrame:CGRectMake(0, 0, 25*F, 10*F)];
+        _time=[[UILabel alloc]initWithFrame:CGRectMake(0, 0, 20*F, 10*F)];
         _time.textAlignment=NSTextAlignmentCenter;
         _time.font=[UIFont fontWithName:nil size:3*F];
         [self.contentView addSubview:_time];
-        _weather=[[UIImageView alloc]initWithFrame:CGRectMake(8*F, 10*F, 8*F, 8*F)];
+        _weather=[[UIImageView alloc]initWithFrame:CGRectMake(6*F, 10*F, 8*F, 8*F)];
         [self.contentView addSubview:_weather];
-        _temperature=[[UILabel alloc]initWithFrame:CGRectMake(0, 18*F, 25*F, 10*F)];
+        _temperature=[[UILabel alloc]initWithFrame:CGRectMake(0, 18*F, 20*F, 10*F)];
         _temperature.font=[UIFont fontWithName:nil size:4*F];
         _temperature.textAlignment=NSTextAlignmentCenter;
         [self.contentView addSubview:_temperature];
