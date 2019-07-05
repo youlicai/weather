@@ -14,7 +14,7 @@
 #import "widget/OtherWeatherDetails.h"
 #import "UIScrollView+RefreshView.h"
 @interface ViewController ()<UITableViewDataSource,UITableViewDelegate,UICollectionViewDelegate,UICollectionViewDataSource,UIScrollViewDelegate>
-@property (nonatomic, strong) CurrentWeather *synopsis;
+@property (nonatomic, strong) CurrentWeather *current_weather;
 @property (nonatomic, strong)  UILabel *area;
 @property (nonatomic, strong)  UIImageView *location;
 @property (nonatomic, strong)  UILabel *last_update;
@@ -39,41 +39,31 @@ NSMutableArray *future_hour_data;
     _scrollview.alwaysBounceVertical=YES;
      self.scrollview.delegate = self;
     self.automaticallyAdjustsScrollViewInsets = NO;
-//    _scrollview.contentInsetAdjustmentBehavior =YES;
     [self.view addSubview:_scrollview];
-    _synopsis=[[CurrentWeather alloc]initWithFrame:CGRectMake(100*F/2-25*F,20*F, 50*F, 45*F)];
+    _current_weather=[[CurrentWeather alloc]initWithFrame:CGRectMake(100*F/2-25*F,20*F, 50*F, 45*F)];
     
-    [self.scrollview addSubview:_synopsis];
-    
+    [self.scrollview addSubview:_current_weather];
     _area=[[UILabel alloc]init];
-    
     _area.textAlignment=NSTextAlignmentCenter;
-//    _area.backgroundColor=[UIColor redColor];
+    _area.font=[UIFont fontWithName:nil size:5*F];
     _area.text=@"浦东新区";
-//    [_area setFrame:<#(CGRect)#>]
-    
     CGSize labelSize=[_area.text boundingRectWithSize:CGSizeMake([UIScreen mainScreen].bounds.size.width-20, 0) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName: _area.font} context:nil].size;
-
-    _area.frame=CGRectMake(self.view.frame.size.width/2-labelSize.width/2, CGRectGetMaxY(_synopsis.frame)+5*F, labelSize.width, 5*F);
+    _area.frame=CGRectMake(self.view.frame.size.width/2-labelSize.width/2, CGRectGetMaxY(_current_weather.frame)+5*F, labelSize.width, 5*F);
     [self.scrollview addSubview:_area];
-    _location=[[UIImageView alloc]initWithFrame:CGRectMake(CGRectGetMaxX(_area.frame)+1*F,CGRectGetMaxY(_synopsis.frame)+5*F, 5*F, 5*F) ];
+    _location=[[UIImageView alloc]initWithFrame:CGRectMake(CGRectGetMaxX(_area.frame)+1*F,CGRectGetMaxY(_current_weather.frame)+5*F, 5*F, 5*F) ];
     [_location setImage:[UIImage imageNamed:@"location"]];
     [self.scrollview addSubview:_location];
-    _last_update=[[UILabel alloc]initWithFrame:CGRectMake(self.view.frame.size.width/2-80, 330, 160, 30)];
+    _last_update=[[UILabel alloc]initWithFrame:CGRectMake(self.view.frame.size.width/2-80, CGRectGetMaxY(_area.frame), 160, 30)];
     _last_update.textAlignment=NSTextAlignmentCenter;
-    _last_update.font=[UIFont fontWithName:nil size:13];
+    _last_update.font=[UIFont fontWithName:nil size:3*F];
     _last_update.textColor= [UIColor colorWithHexString:@"#666666"];
-//    _last_update.text=@"上次更新时间：23:45";
     [self.scrollview addSubview:_last_update];
     
-    _future_24_hour=[[UILabel alloc]initWithFrame:CGRectMake(3*F, CGRectGetMaxY(_last_update.frame), 160, 30)];
-    _future_24_hour.font=[UIFont fontWithName:nil size:13];
+    _future_24_hour=[[UILabel alloc]initWithFrame:CGRectMake(3*F, CGRectGetMaxY(_last_update.frame), 30*F, 3*F)];
+    _future_24_hour.font=[UIFont fontWithName:nil size:3*F];
     _future_24_hour.text=@"未来24小时天气";
     _future_24_hour.textColor= [UIColor colorWithHexString:@"#444444"];
-
-//    UIColor colorWithHexString:@"#F4F6F7"
     [self.scrollview addSubview:_future_24_hour];
-    
     UICollectionViewFlowLayout *layout=[[UICollectionViewFlowLayout alloc]init];
     _collectionView=[[UICollectionView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(_future_24_hour.frame), self.view.frame.size.width, 30*F)collectionViewLayout:layout];
     //水平滑动
@@ -85,28 +75,25 @@ NSMutableArray *future_hour_data;
     [_collectionView registerClass:[HourWeatherCell class] forCellWithReuseIdentifier:@"cellId"];
     [self.scrollview addSubview:_collectionView];
     
-    _future_7_day=[[UILabel alloc]initWithFrame:CGRectMake(3*F, CGRectGetMaxY(_collectionView.frame), 160, 30)];
-    _future_7_day.font=[UIFont fontWithName:nil size:13];
+    _future_7_day=[[UILabel alloc]initWithFrame:CGRectMake(3*F, CGRectGetMaxY(_collectionView.frame)+5*F, 30*F, 3*F)];
+    _future_7_day.font=[UIFont fontWithName:nil size:3*F];
     _future_7_day.text=@"未来7天天气";
     _future_7_day.textColor= [UIColor colorWithHexString:@"#444444"];
     [self.scrollview addSubview:_future_7_day];
-    _view1=[[UIView alloc]initWithFrame:CGRectMake(0, 530, self.view.bounds.size.width, 350)];
-    
-    
-    
+    _view1=[[UIView alloc]initWithFrame:CGRectMake(0, CGRectGetMaxY(_future_7_day.frame), self.view.bounds.size.width, 350)];
     
     [self.scrollview addSubview:_view1];
     UIView *line1=[[UIView alloc]initWithFrame:CGRectMake(5*F, CGRectGetMaxY(_view1.frame)+4*F, 90*F, 0.5)];
     line1.backgroundColor=[UIColor grayColor];
     [self.scrollview addSubview:line1];
     
-    _pollution=[[OtherWeatherDetails alloc]initWithFrame:CGRectMake(5*F, CGRectGetMaxY(line1.frame)+5*F,95*F, 230)];
+    _pollution=[[OtherWeatherDetails alloc]initWithFrame:CGRectMake(5*F, CGRectGetMaxY(line1.frame)+5*F,95*F, 50*F)];
     
     [self.scrollview addSubview:_pollution];
     UIView *line2=[[UIView alloc]initWithFrame:CGRectMake(5*F, CGRectGetMaxY(_pollution.frame)+3*F, 90*F, 0.5)];
     line2.backgroundColor=[UIColor grayColor];
     [self.scrollview addSubview:line2];
-    _humidity=[[OtherWeatherDetails alloc]initWithFrame:CGRectMake(5*F, CGRectGetMaxY(line2.frame)+5*F,95*F, 230)];
+    _humidity=[[OtherWeatherDetails alloc]initWithFrame:CGRectMake(5*F, CGRectGetMaxY(line2.frame)+5*F,95*F, 50*F)];
 
     [self.scrollview addSubview:_humidity];
 }
@@ -127,7 +114,7 @@ NSMutableArray *future_hour_data;
                            @"city":@"上海"};
     [req request:url params:params success:^(NSDictionary * _Nonnull resp) {
         dispatch_async(dispatch_get_main_queue(), ^(){
-            [self.synopsis initData:[resp[@"data"][0][@"tem"] stringByReplacingOccurrencesOfString:@"℃" withString:@""] info:resp[@"data"][0][@"wea"] aqi:resp[@"data"][0][@"air_level"]];
+            [self.current_weather initData:[resp[@"data"][0][@"tem"] stringByReplacingOccurrencesOfString:@"℃" withString:@""] info:resp[@"data"][0][@"wea"] aqi:resp[@"data"][0][@"air_level"]];
             self.last_update.text=[@"更新时间:" stringByAppendingString:[resp[@"update_time"] substringFromIndex:11]];
             future_hour_data = [NSMutableArray array];
             
@@ -180,22 +167,15 @@ NSMutableArray *future_hour_data;
 
 // 返回每个item的大小
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
-    CGFloat height = 35.0f;
-    CGFloat width = 100;
+    CGFloat height = 25*F;
+    CGFloat width = 25*F;
     return CGSizeMake(width, height);
  
 }
 
 -(UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
-    NSArray *arr = @[@"sun",@"is",@"a",@"smilling",@"girl"];
-    NSString *tablePList = [[NSBundle mainBundle] pathForResource:@"tableList" ofType:@"plist"];
-    NSArray *tableData = [[NSArray alloc] initWithContentsOfFile:tablePList];
-    
     HourWeatherCell *cell = (HourWeatherCell *)[collectionView dequeueReusableCellWithReuseIdentifier:@"cellId" forIndexPath:indexPath];
     [cell initData:future_hour_data[indexPath.section][@"time"] weather:@"中雨转大雨" temperature:future_hour_data[indexPath.section][@"temperature"]];
-//    [cell initData:];
-//    [cell initData:arr[indexPath.section]];
-    
     return cell;
     
 }

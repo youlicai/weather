@@ -17,55 +17,20 @@
 
 @implementation HourWeatherCell
 
-//+(instancetype)getcell:(UITableView *)tableview{
-//    static NSString *identifier = @"status";
-//    HourWeatherCell *cell=[tableview dequeueReusableCellWithIdentifier:identifier];
-//    if(cell==nil){
-//        cell=[[HourWeatherCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
-//    }
-//
-//    return cell;
-//}
-//
-//-(id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier{
-//    self=[super initWithStyle:style reuseIdentifier:reuseIdentifier];
-//    if(self){
-//        _time=[[UILabel alloc]initWithFrame:CGRectMake(0, 0, 18*F, 10*F)];
-//        _time.textAlignment=NSTextAlignmentCenter;
-//        _time.text=@"23:00";
-//        _time.font=[UIFont fontWithName:nil size:14];
-//        [self addSubview:_time];
-//        _weather=[[UIImageView alloc]initWithFrame:CGRectMake(5*F, 10*F, 8*F, 8*F)];
-//        [_weather setImage:[UIImage imageNamed:@"weather"]];
-//        [self addSubview:_weather];
-//        _temperature=[[UILabel alloc]initWithFrame:CGRectMake(0, 18*F, 18*F, 10*F)];
-//        _temperature.text=@"11℃";
-//        _temperature.textAlignment=NSTextAlignmentCenter;
-//        [self addSubview:_temperature];
-//        self.contentView.frame=CGRectMake(0, 0, 20*F, 40*F);
-//
-//    }
-//    return self;
-//}
-
 
 - (instancetype)initWithFrame:(CGRect)frame{
     if (self = [super initWithFrame:frame]) {
         //添加自己需要个子视图控件
-        _time=[[UILabel alloc]initWithFrame:CGRectMake(0, 0, 18*F, 10*F)];
+        _time=[[UILabel alloc]initWithFrame:CGRectMake(0, 0, 25*F, 10*F)];
         _time.textAlignment=NSTextAlignmentCenter;
-        _time.text=@"23:00";
-        _time.font=[UIFont fontWithName:nil size:14];
+        _time.font=[UIFont fontWithName:nil size:3*F];
         [self.contentView addSubview:_time];
-        _weather=[[UIImageView alloc]initWithFrame:CGRectMake(5*F, 10*F, 8*F, 8*F)];
-        [_weather setImage:[UIImage imageNamed:@"weather"]];
+        _weather=[[UIImageView alloc]initWithFrame:CGRectMake(8*F, 10*F, 8*F, 8*F)];
         [self.contentView addSubview:_weather];
-        _temperature=[[UILabel alloc]initWithFrame:CGRectMake(0, 18*F, 18*F, 10*F)];
-        _temperature.text=@"11℃";
+        _temperature=[[UILabel alloc]initWithFrame:CGRectMake(0, 18*F, 25*F, 10*F)];
+        _temperature.font=[UIFont fontWithName:nil size:4*F];
         _temperature.textAlignment=NSTextAlignmentCenter;
         [self.contentView addSubview:_temperature];
-        //                self.contentView.frame=CGRectMake(0, 0, 20*F, 40*F);
-        //
     }
     return self;
 }
